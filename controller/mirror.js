@@ -1,9 +1,27 @@
+const User = require('../models/user');
+const Thing = require('../models/thing');
+
 exports.postAddThing = (req, res, next) => {
-    console.log(req.body);
-    res.redirect('/add-thing');
+    const category = req.body.category;
+    const name = req.body.name;
+    const comment = req.body.comment;
+
+    const thing = new Thing({
+        category: category,
+        name: name,
+        comment: comment,
+        userId: req.user
+    });
+    thing.save()
+        .then(result => {
+            console.log(`Thing Created Successfully!`);
+            res.redirect('/add-thing');
+        })
+        .catch(err => console.log(`Error add thing: ${err}`));
 };
 
 exports.getAddThing = (req, res, next) => {
+
     res.render('edit-thing', {
         pageTitle: 'Add Thing',
         path: '/add-thing'
