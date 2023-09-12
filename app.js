@@ -3,6 +3,7 @@ const app = express();
 const bodyParser = require("body-parser");
 const path = require("path");
 const mirrorRoutes = require('./routes/mirror');
+const _404Controller = require('./controller/404');
 
 
 app.set("view engine", "ejs");
@@ -15,8 +16,11 @@ app.use(mirrorRoutes);
 
 
 
-app.get('/add-thing', (req, res, next) => {
-    res.render('edit-thing');
-});
+
+app.get('/', (req, res, next) => {
+    res.redirect('/add-thing');
+})
+
+app.use(_404Controller.get404);
 
 app.listen(3000);
