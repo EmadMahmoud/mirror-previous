@@ -3,16 +3,25 @@
 
         <main>
             <div class="container">
-                <div class="row justify-content-center text-center mt-5">
-                    <h1 class="col-6">Movies</h1>
-                    <ul class="col-8" style="list-style-type: none;">
-                        <li><a href="#" style="text-decoration: none; color: rgb(65, 111, 89);">Taxi Driver</a></li>
-                        <li><a href="#" style="text-decoration: none; color: rgb(65, 111, 89);">Interstellar</a></li>
-                        <li><a href="#" style="text-decoration: none; color: rgb(65, 111, 89);">Fight Club</a>
-                        </li>
-                    </ul>
-                </div>
-                <hr>
+                <% for (c of categories ) { %>
+                    <div class="row justify-content-center text-center mt-5">
+                        <h1 class="col-6">
+                            <%= c %>
+                                <% let currentCategory=c; %>
+                        </h1>
+                        <ul class="col-8" style="list-style-type: none;">
+                            <% for (thing of things ) { %>
+                                <% if (thing.thingId.category===currentCategory ) { %>
+                                    <li><a href="#" style="text-decoration: none; color: rgb(65, 111, 89);">
+                                            <%= thing.thingId.name %>
+                                        </a></li>
+                                    <% } %>
+                                        <% } %>
+
+                        </ul>
+                        <hr>
+                    </div>
+                    <% } %>
             </div>
         </main>
 

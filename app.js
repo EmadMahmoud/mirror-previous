@@ -21,7 +21,6 @@ app.use((req, res, next) => {
     User.findById('6500c0cbfe52711b39ac4d66')
         .then(user => {
             req.user = user;
-            console.log("done");
             next();
         })
         .catch(err => console.log(`Error finding user: ${err}`));

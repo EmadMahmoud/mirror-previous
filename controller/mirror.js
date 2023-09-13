@@ -14,6 +14,12 @@ exports.postAddThing = (req, res, next) => {
     });
     thing.save()
         .then(result => {
+            User.findById('6500c0cbfe52711b39ac4d66')
+                .then(user => {
+                    user.profile.things.push({ thingId: thing._id })
+                    user.save()
+                })
+
             console.log(`Thing Created Successfully!`);
             res.redirect('/add-thing');
         })
@@ -29,8 +35,20 @@ exports.getAddThing = (req, res, next) => {
 };
 
 exports.getThings = (req, res, next) => {
-    res.render('profile', {
-        pageTitle: 'Profile',
-        path: '/profile'
-    });
+
+
+    req.user
+        .populate('profile.things.thingId')
+        .then(user => {
+            const things = user.profile.things;
+            const categories = ['movies', 'TV Shows', 'books', 'Songs'];
+            console.log(things)
+            res.render('profile', {
+                pageTitle: 'profile',
+                path: '/profile',
+                things: things,
+                categories: categories
+            });
+        })
+        .catch(err => console.log(err));
 };
