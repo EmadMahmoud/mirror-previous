@@ -5,29 +5,34 @@
 
         <div class="container">
 
-            <form action="/add-thing" method="post">
+            <form action="<% if (editing) { %>/edit-thing/<%= thing._id %> <% } else { %>/add-thing <% }%> %>"
+                method="post">
                 <div class="row justify-content-center text-center mt-5">
                     <div class="col-6">
-                        <h1>Add a thing</h1>
+                        <h1>
+                            <% if (editing){ %> Edit A Thing <%} else { %> Add A Thing <% }%>
+                        </h1>
                         <div class="form-floating mb-3">
                             <select class="form-select" name="category" id="floatingSelect"
                                 aria-label="Floating label select example">
-                                <option value="movies" selected>Movies</option>
-                                <option value="tv-shows">TV Shows</option>
-                                <option value="books">Books</option>
-                                <option value="songs">Songs</option>
+                                <option value="movies" <% if(thing.category==='movies' ){ %>selected <%} %> >Movies
+                                </option>
+                                <option value="tv-shows" <% if(thing.category==='tv-shows' ){ %>selected <%} %>>TV Shows
+                                </option>
+                                <option value="books" <% if(thing.category==='books' ){ %>selected <%} %>>Books</option>
+                                <option value="songs" <% if(thing.category==='songs' ){ %>selected <%} %>>Songs</option>
                             </select>
                             <label for="floatingSelect">Choose a category</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" name="name" id="name"
-                                placeholder="example@test.com">
+                            <input type="text" class="form-control" name="name" id="name" placeholder="example@test.com"
+                                value="<%= thing ? thing.name: '' %>">
                             <label for="name">Name</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <textarea class="form-control" placeholder="Leave a comment here" name="comment"
-                                id="floatingTextarea2" style="height: 100px"></textarea>
-                            <label for="floatingTextarea2">type a Comment..</label>
+                            <textarea class="form-control" name="comment" id="floatingTextarea2" style="height: 100px"><%= thing ? thing.comment : 'Leave a comment here' %>
+                            </textarea>
+                            <label for="floatingTextarea2">type a comment..</label>
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </div>

@@ -32,7 +32,8 @@ exports.getAddThing = (req, res, next) => {
 
     res.render('edit-thing', {
         pageTitle: 'Add Thing',
-        path: '/add-thing'
+        path: '/add-thing',
+        editing: false
     });
 };
 
@@ -44,7 +45,6 @@ exports.getThings = (req, res, next) => {
         .then(user => {
             const things = user.profile.things;
             const categories = ['movies', 'tv-shows', 'books', 'songs'];
-            console.log(things)
             res.render('profile', {
                 pageTitle: 'profile',
                 path: '/profile',
@@ -84,3 +84,36 @@ exports.postDeleteThing = (req, res, next) => {
         })
 }
 
+exports.getEditThing = (req, res, next) => {
+    const thingId = req.params.thingId;
+    Thing.findById(thingId)
+        .then(thing => {
+            res.render('edit-thing', {
+                pageTitle: 'Edit Thing',
+                path: '/edit-thing',
+                editing: true,
+                thing: thing
+            });
+        })
+        .catch(err => console.log(`Error get thing to edit: ${err}`))
+}
+
+exports.postEditThing = (req, res, next) => {
+    const thingId = req.params.thingId;
+    const updatedCategory = req.body.category;
+    const updatedName = req.body.name;
+    const updatedComment = req.body.comment;
+
+    Thing.findById(thingId)
+        .then(thing => {
+            thing.category = updatedCategory;
+            thing.name = updatedName;
+            thing.comment = updatedComment;
+            return thing.save()
+        })
+        .then(result => {
+            console.log('Thing Updated Successfully!');
+            res.redirect('/profile');
+        })
+        .catch(err => console.log(`Error updating thing: ${err}`))
+}

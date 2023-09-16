@@ -11,6 +11,8 @@ router.get('/add-thing', mirrorController.getAddThing)
 router.post('/add-thing', mirrorController.postAddThing);
 router.get('/thing-details/:thingId', mirrorController.getThingDetails);
 router.post('/delete-thing/:thingId', mirrorController.postDeleteThing);
+router.get('/edit-thing/:thingId', mirrorController.getEditThing);
+router.post('/edit-thing/:thingId', mirrorController.postEditThing);
 
 
 module.exports = router;
