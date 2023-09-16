@@ -25,6 +25,13 @@ const userSchema = new Schema({
 
 });
 
+userSchema.methods.deleteAThing = function (thingId) {
+    const things = [...this.profile.things];
+    const updatedThings = things.filter(thing => thing.thingId.toString() !== thingId.toString());
+    this.profile.things = updatedThings;
+    return this.save();
+}
+
 
 
 

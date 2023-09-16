@@ -9,4 +9,8 @@ const mirrorController = require('../controller/mirror');
 router.get('/profile', mirrorController.getThings)
 router.get('/add-thing', mirrorController.getAddThing)
 router.post('/add-thing', mirrorController.postAddThing);
+router.get('/thing-details/:thingId', mirrorController.getThingDetails);
+router.post('/delete-thing/:thingId', mirrorController.postDeleteThing);
+
+
 module.exports = router;

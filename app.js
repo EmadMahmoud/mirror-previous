@@ -28,7 +28,7 @@ app.use((req, res, next) => {
 
 app.use(mirrorRoutes);
 app.get('/', (req, res, next) => {
-    res.redirect('/add-thing');
+    res.redirect('/profile');
 })
 app.use(_404Controller.get404);
 

@@ -12,7 +12,8 @@
                         <ul class="col-8" style="list-style-type: none;">
                             <% for (thing of things ) { %>
                                 <% if (thing.thingId.category===currentCategory ) { %>
-                                    <li><a href="#" style="text-decoration: none; color: rgb(65, 111, 89);">
+                                    <li><a href="/thing-details/<%=thing.thingId._id%>"
+                                            style="text-decoration: none; color: rgb(65, 111, 89);">
                                             <%= thing.thingId.name %>
                                         </a></li>
                                     <% } %>
