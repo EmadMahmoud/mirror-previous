@@ -6,3 +6,37 @@ a {
     text-decoration: none;
     color: black;
 }
+
+/* button {
+    margin-top: 1rem;
+} */
+
+.thing__details__buttons {
+    display: flex;
+    justify-content: space-around;
+}
+
+.nav__right {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
+.nav__right li {
+    margin-left: 1rem;
+}
+
+a.active {
+    color: #157347 !important;
+    font-weight: bold;
+}
+
+.nav__left {
+    display: flex;
+}
+
+.nav__button {
+    background: none;
+    border: none;
+    text-align: center;
+}

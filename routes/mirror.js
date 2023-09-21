@@ -1,18 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const mirrorController = require('../controller/mirror');
+const isAuth = require('../middleware/is-auth');
 
-//edit-thing post, get
-//delete-thing post
-//thing-details get
 
-router.get('/profile', mirrorController.getThings)
-router.get('/add-thing', mirrorController.getAddThing)
-router.post('/add-thing', mirrorController.postAddThing);
-router.get('/thing-details/:thingId', mirrorController.getThingDetails);
-router.post('/delete-thing/:thingId', mirrorController.postDeleteThing);
-router.get('/edit-thing/:thingId', mirrorController.getEditThing);
-router.post('/edit-thing/:thingId', mirrorController.postEditThing);
+router.get('/profile', isAuth, mirrorController.getThings);
+router.get('/add-thing', isAuth, mirrorController.getAddThing);
+router.post('/add-thing', isAuth, mirrorController.postAddThing);
+router.get('/thing-details/:thingId', isAuth, mirrorController.getThingDetails);
+router.post('/delete-thing/:thingId', isAuth, mirrorController.postDeleteThing);
+router.get('/edit-thing/:thingId', isAuth, mirrorController.getEditThing);
+router.post('/edit-thing/:thingId', isAuth, mirrorController.postEditThing);
 
 
 module.exports = router;

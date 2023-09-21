@@ -15,7 +15,7 @@ exports.postAddThing = (req, res, next) => {
     });
     thing.save()
         .then(result => {
-            User.findById('6500c0cbfe52711b39ac4d66')
+            User.findById(req.user)
                 .then(user => {
                     user.profile.things.push({ thingId: thing._id })
                     user.save()
@@ -33,13 +33,13 @@ exports.getAddThing = (req, res, next) => {
     res.render('edit-thing', {
         pageTitle: 'Add Thing',
         path: '/add-thing',
-        editing: false
+        editing: false,
+        thing: { category: 'movies' },
+        isAuthenticated: req.session.isLoggedIn
     });
 };
 
 exports.getThings = (req, res, next) => {
-
-
     req.user
         .populate('profile.things.thingId')
         .then(user => {
@@ -49,7 +49,8 @@ exports.getThings = (req, res, next) => {
                 pageTitle: 'profile',
                 path: '/profile',
                 things: things,
-                categories: categories
+                categories: categories,
+                isAuthenticated: req.session.isLoggedIn
             });
         })
         .catch(err => console.log(err));
@@ -63,7 +64,8 @@ exports.getThingDetails = (req, res, next) => {
             res.render('thing-details', {
                 pageTitle: 'Thing Details',
                 path: '/thing-details',
-                thing: fetchedthing
+                thing: fetchedthing,
+                isAuthenticated: req.session.isLoggedIn
             });
         })
         .catch(err => console.log(`Error get thing details: ${err}`));
@@ -92,7 +94,8 @@ exports.getEditThing = (req, res, next) => {
                 pageTitle: 'Edit Thing',
                 path: '/edit-thing',
                 editing: true,
-                thing: thing
+                thing: thing,
+                isAuthenticated: req.session.isLoggedIn
             });
         })
         .catch(err => console.log(`Error get thing to edit: ${err}`))

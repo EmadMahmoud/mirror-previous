@@ -13,12 +13,14 @@
                             <p class="card-text">
                                 <%= thing.comment %>
                             </p>
+                            <div class="thing__details__buttons">
+                                <button class="btn btn-info">
+                                    <a href="/edit-thing/<%=thing._id%>?edit=true" class="card-link">Edit</a>
+                                </button>
+                                <form action="/delete-thing/<%= thing._id %>" method="post">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                            </div>
 
-                            <button class="btn btn-info">
-                                <a href="/edit-thing/<%=thing._id%>?edit=true" class="card-link">Edit</a>
-                            </button>
-                            <form action="/delete-thing/<%= thing._id %>" method="post">
-                                <button type="submit" class="btn btn-danger">Delete</button>
 
                         </div>
                     </div>
