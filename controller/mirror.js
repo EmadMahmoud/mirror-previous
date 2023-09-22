@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 exports.postAddThing = (req, res, next) => {
     const category = req.body.category;
     const name = req.body.name;
-    const comment = req.body.comment;
+    const comment = req.body.comment.trim();
 
     const thing = new Thing({
         category: category,
@@ -34,8 +34,7 @@ exports.getAddThing = (req, res, next) => {
         pageTitle: 'Add Thing',
         path: '/add-thing',
         editing: false,
-        thing: { category: 'movies' },
-        isAuthenticated: req.session.isLoggedIn
+        thing: { category: 'movies' }
     });
 };
 
@@ -49,8 +48,7 @@ exports.getThings = (req, res, next) => {
                 pageTitle: 'profile',
                 path: '/profile',
                 things: things,
-                categories: categories,
-                isAuthenticated: req.session.isLoggedIn
+                categories: categories
             });
         })
         .catch(err => console.log(err));
@@ -64,8 +62,7 @@ exports.getThingDetails = (req, res, next) => {
             res.render('thing-details', {
                 pageTitle: fetchedthing.name,
                 path: '/thing-details',
-                thing: fetchedthing,
-                isAuthenticated: req.session.isLoggedIn
+                thing: fetchedthing
             });
         })
         .catch(err => console.log(`Error get thing details: ${err}`));
@@ -94,8 +91,7 @@ exports.getEditThing = (req, res, next) => {
                 pageTitle: 'Edit Thing',
                 path: '/edit-thing',
                 editing: true,
-                thing: thing,
-                isAuthenticated: req.session.isLoggedIn
+                thing: thing
             });
         })
         .catch(err => console.log(`Error get thing to edit: ${err}`))
@@ -105,7 +101,7 @@ exports.postEditThing = (req, res, next) => {
     const thingId = req.params.thingId;
     const updatedCategory = req.body.category;
     const updatedName = req.body.name;
-    const updatedComment = req.body.comment;
+    const updatedComment = req.body.comment.trim();
 
     Thing.findById(thingId)
         .then(thing => {

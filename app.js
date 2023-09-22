@@ -12,6 +12,8 @@ const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session); //pass session object to connect-mongodb function
 const { csrfSync } = require('csrf-sync');
 
+const flash = require('connect-flash');
+
 const MONGODB_URI = 'mongodb+srv://emadis4char:J80zW1kxlvjrNefg@cluster0.dcyxwax.mongodb.net/mirror'
 
 const store = new MongoDBStore({
@@ -38,6 +40,7 @@ app.use(session({ secret: 'this string should be long in production', resave: fa
 
 
 app.use(csrfSynchronisedProtection);
+app.use(flash());
 
 app.use((req, res, next) => {
     if (!req.session.user) {
@@ -52,7 +55,7 @@ app.use((req, res, next) => {
 });
 
 app.use((req, res, next) => {
-    res.locals.isLoggedIn = req.session.isLoggedIn;
+    res.locals.isAuthenticated = req.session.isLoggedIn;
     res.locals.csrfToken = req.csrfToken();
     next();
 });
