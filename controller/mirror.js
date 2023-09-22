@@ -62,7 +62,7 @@ exports.getThingDetails = (req, res, next) => {
     Thing.findById(thingId)
         .then(fetchedthing => {
             res.render('thing-details', {
-                pageTitle: 'Thing Details',
+                pageTitle: fetchedthing.name,
                 path: '/thing-details',
                 thing: fetchedthing,
                 isAuthenticated: req.session.isLoggedIn

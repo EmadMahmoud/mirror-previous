@@ -18,6 +18,7 @@
                                     <a href="/edit-thing/<%=thing._id%>?edit=true" class="card-link">Edit</a>
                                 </button>
                                 <form action="/delete-thing/<%= thing._id %>" method="post">
+                                    <input type="hidden" name="CSRFToken" value="<%= csrfToken %>">
                                     <button type="submit" class="btn btn-danger">Delete</button>
                             </div>
 

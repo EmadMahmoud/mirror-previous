@@ -10,6 +10,7 @@ const User = require('./models/user');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session); //pass session object to connect-mongodb function
+const { csrfSync } = require('csrf-sync');
 
 const MONGODB_URI = 'mongodb+srv://emadis4char:J80zW1kxlvjrNefg@cluster0.dcyxwax.mongodb.net/mirror'
 
@@ -18,6 +19,10 @@ const store = new MongoDBStore({
     collection: 'sessions'
     //you can set an expire date for the session and mongo will delete it
 })
+
+const { csrfSynchronisedProtection } = csrfSync({
+    getTokenFromRequest: (req) => req.body['CSRFToken']
+});
 
 
 app.set("view engine", "ejs");
@@ -32,6 +37,8 @@ app.use(session({ secret: 'this string should be long in production', resave: fa
 //you can configure the cookie which is being saved by the session to maybe set the expire date.
 
 
+app.use(csrfSynchronisedProtection);
+
 app.use((req, res, next) => {
     if (!req.session.user) {
         return next();
@@ -42,6 +49,12 @@ app.use((req, res, next) => {
             next();
         })
         .catch(err => console.log(`Error finding user: ${err}`));
+});
+
+app.use((req, res, next) => {
+    res.locals.isLoggedIn = req.session.isLoggedIn;
+    res.locals.csrfToken = req.csrfToken();
+    next();
 });
 
 

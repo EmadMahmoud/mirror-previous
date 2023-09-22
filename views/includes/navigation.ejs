@@ -31,6 +31,7 @@
                                 <% } else { %>
                             <li class="nav-item">
                                 <form action="/logout" method="post">
+                                    <input type="hidden" name="CSRFToken" value="<%= csrfToken %>">
                                     <button type="submit" class="nav__button">Logout</button>
                                 </form>
                             </li>
