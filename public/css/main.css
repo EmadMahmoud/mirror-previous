@@ -40,3 +40,7 @@ a.active {
     border: none;
     text-align: center;
 }
+
+.form__link:hover {
+    color: #157347;
+}

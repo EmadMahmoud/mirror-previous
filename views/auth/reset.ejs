@@ -7,14 +7,14 @@
             <% if (errorMessage.length> 0) { %>
 
                 <div class="row justify-content-center text-center">
-                    <p class="alert alert-info col-3" role="alert">
+                    <p class="alert alert-info col-4" role="alert">
                         <%= errorMessage %>
                     </p>
                 </div>
 
                 <% } %>
 
-                    <form action="/login" method="post">
+                    <form action="/reset" method="post">
                         <div class="row justify-content-center text-center mt-5">
                             <div class="col-5">
                                 <div class="form-floating mb-3">
@@ -22,26 +22,13 @@
                                         placeholder="Enter your email..">
                                     <label for="email">Email</label>
                                 </div>
-                                <div class="form-floating mb-3">
-                                    <input type="password" class="form-control" name="password" id="password"
-                                        placeholder="password..">
-                                    <label for="password">Password</label>
-                                </div>
                                 <input type="hidden" name="CSRFToken" value="<%= csrfToken %>">
-                                <button type="submit" class="btn btn-success">Login</button>
+                                <button type="submit" class="btn btn-success">Reset Password</button>
                             </div>
 
                         </div>
 
                     </form>
-                    <div class="container justify-content-center text-center mt-5">
-                        <div class="row">
-                            <div class="col align-self-start">
-                                <a href="/reset" style=" border-bottom: black solid 1px;" class="form__link">Reset
-                                    Password</a>
-                            </div>
-                        </div>
-                    </div>
         </div>
 
         <%- include('../includes/end.ejs') %>
