@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const path = require("path");
+const mongoURI = require('./util/config');
 const mirrorRoutes = require('./routes/mirror');
 const authRoutes = require('./routes/auth');
 const _404Controller = require('./controller/404');
@@ -14,10 +15,8 @@ const { csrfSync } = require('csrf-sync');
 
 const flash = require('connect-flash');
 
-const MONGODB_URI = 'mongodb+srv://emadis4char:J80zW1kxlvjrNefg@cluster0.dcyxwax.mongodb.net/mirror'
-
 const store = new MongoDBStore({
-    uri: MONGODB_URI,
+    uri: mongoURI.MONGODB_URI,
     collection: 'sessions'
     //you can set an expire date for the session and mongo will delete it
 })
@@ -71,7 +70,7 @@ app.use(_404Controller.get404);
 
 
 
-mongoose.connect(MONGODB_URI)
+mongoose.connect(mongoURI.MONGODB_URI)
     .then(result => {
         app.listen(3000);
         console.log('Db Connected');
