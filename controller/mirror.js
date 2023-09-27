@@ -1,11 +1,24 @@
 const User = require('../models/user');
 const Thing = require('../models/thing');
 const mongoose = require('mongoose');
+const { validationResult } = require('express-validator');
 
 exports.postAddThing = (req, res, next) => {
     const category = req.body.category;
     const name = req.body.name;
     const comment = req.body.comment.trim();
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.status(422).render('edit-thing', {
+            pageTitle: 'Add Thing',
+            path: '/add-thing',
+            editing: false,
+            thing: { category: category, name: name, comment: comment },
+            errorMessage: errors.array()[0].msg,
+            validationErrors: errors.array()
+        });
+    }
 
     const thing = new Thing({
         category: category,
@@ -34,7 +47,9 @@ exports.getAddThing = (req, res, next) => {
         pageTitle: 'Add Thing',
         path: '/add-thing',
         editing: false,
-        thing: { category: 'movies' }
+        thing: { category: 'movies' },
+        errorMessage: [],
+        validationErrors: []
     });
 };
 
@@ -91,7 +106,9 @@ exports.getEditThing = (req, res, next) => {
                 pageTitle: 'Edit Thing',
                 path: '/edit-thing',
                 editing: true,
-                thing: thing
+                thing: thing,
+                errorMessage: [],
+                validationErrors: []
             });
         })
         .catch(err => console.log(`Error get thing to edit: ${err}`))
@@ -102,6 +119,18 @@ exports.postEditThing = (req, res, next) => {
     const updatedCategory = req.body.category;
     const updatedName = req.body.name;
     const updatedComment = req.body.comment.trim();
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.status(422).render('edit-thing', {
+            pageTitle: 'Edit Thing',
+            path: '/edit-thing',
+            editing: true,
+            thing: { _id: thingId, category: updatedCategory, name: updatedName, comment: updatedComment },
+            errorMessage: errors.array()[0].msg,
+            validationErrors: errors.array()
+        });
+    }
 
     Thing.findById(thingId)
         .then(thing => {

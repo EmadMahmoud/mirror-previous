@@ -14,18 +14,42 @@
 
                 <% } %>
 
-                    <form action="/login" method="post">
+                    <form action="/login" method="post" class="needs-validation">
                         <div class="row justify-content-center text-center mt-5">
                             <div class="col-5">
                                 <div class="form-floating mb-3">
-                                    <input type="email" class="form-control" name="email" id="email"
-                                        placeholder="Enter your email..">
+                                    <input type="email"
+                                        class="form-control <%= validationErrors.find(e => e.path === 'email') ? 'invalid': '' %>"
+                                        name="email" id="email" placeholder="Enter your email.."
+                                        value="<%= oldInput.email %>">
                                     <label for="email">Email</label>
+                                    <% if (validationErrors.find(e=> e.path === 'email')) { %>
+                                        <% validationErrors.forEach(e=> {
+                                            if(e.path === 'email') {
+                                            emailError = e.msg;
+                                            }
+                                            }) %>
+                                            <p style="font-size: 90%; color: brown;">
+                                                <%= emailError %>
+                                            </p>
+                                            <% } %>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="password" class="form-control" name="password" id="password"
-                                        placeholder="password..">
+                                    <input type="password"
+                                        class="form-control <%= validationErrors.find(e => e.path === 'password') ? 'invalid': '' %>"
+                                        name="password" id="password" placeholder="password.."
+                                        value="<%= oldInput.password %>">
                                     <label for="password">Password</label>
+                                    <% if (validationErrors.find(e=> e.path === 'password')) { %>
+                                        <% validationErrors.forEach(e=> {
+                                            if(e.path === 'password') {
+                                            passwordError = e.msg;
+                                            }
+                                            }) %>
+                                            <p style="font-size: 90%; color: brown;">
+                                                <%= passwordError %>
+                                            </p>
+                                            <% } %>
                                 </div>
                                 <input type="hidden" name="CSRFToken" value="<%= csrfToken %>">
                                 <button type="submit" class="btn btn-success">Login</button>

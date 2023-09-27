@@ -44,3 +44,9 @@ a.active {
 .form__link:hover {
     color: #157347;
 }
+
+div input.invalid,
+div textarea.invalid,
+div select.invalid {
+    border: 1px solid red;
+}
