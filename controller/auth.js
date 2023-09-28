@@ -3,13 +3,14 @@ const bcrypt = require('bcryptjs')
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const { validationResult } = require('express-validator');
+const { SENDMAILPASS, SENDMAILUSER } = require('../util/config');
 
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'emmakarleson@gmail.com',
-        pass: 'msgi kcdi hdhl kvqd'
+        user: SENDMAILUSER,
+        pass: SENDMAILPASS
     }
 });
 
@@ -101,14 +102,18 @@ exports.postSignup = (req, res, next) => {
         .then(result => {
             transporter.sendMail({
                 to: email,
-                from: 'emmakarleson@gmail.com',
+                from: SENDMAILUSER,
                 subject: 'Welcome To The Family',
                 html: '<h1>You successfully signed up!</h1>'
             })
                 .catch(err => console.log(`Error sending mail: ${err}`));
             res.redirect('/login');
         })
-
+        .catch(err => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        })
 }
 
 exports.postLogout = (req, res, next) => {
@@ -161,7 +166,7 @@ exports.postReset = (req, res, next) => {
                 }
                 transporter.sendMail({
                     to: email,
-                    from: 'emmakarleson@gmail.com',
+                    from: SENDMAILUSER,
                     subject: 'Reset The Password',
                     html: `
                 <h1>You Requested a Password Reset</h1>
@@ -170,7 +175,11 @@ exports.postReset = (req, res, next) => {
                 <p>this email will not valid in 1 hour!<p>
                 `
                 })
-                    .catch(err => console.log(`Error sending Email: ${err}`));
+                    .catch(err => {
+                        const error = new Error(err);
+                        error.httpStatusCode = 500;
+                        return next(error);
+                    })
             })
 
     })
@@ -200,7 +209,11 @@ exports.getNewPassword = (req, res, next) => {
             });
 
         })
-        .catch(err => console.log(`Error finding user: ${err}`));
+        .catch(err => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        })
 
 }
 
@@ -244,5 +257,9 @@ exports.postNewPassword = (req, res, next) => {
                 res.redirect('/login');
             }
         })
-        .catch(err => console.log(`Error finding user: ${err}`));
+        .catch(err => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        })
 }

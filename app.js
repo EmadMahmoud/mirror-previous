@@ -5,7 +5,7 @@ const path = require("path");
 const mongoURI = require('./util/config');
 const mirrorRoutes = require('./routes/mirror');
 const authRoutes = require('./routes/auth');
-const _404Controller = require('./controller/404');
+const errorController = require('./controller/error');
 const User = require('./models/user');
 
 const mongoose = require('mongoose');
@@ -42,21 +42,26 @@ app.use(csrfSynchronisedProtection);
 app.use(flash());
 
 app.use((req, res, next) => {
+    res.locals.isAuthenticated = req.session.isLoggedIn;
+    res.locals.csrfToken = req.csrfToken();
+    next();
+});
+
+app.use((req, res, next) => {
     if (!req.session.user) {
         return next();
     }
     User.findById(req.session.user._id)
         .then(user => {
+            if (!user) {
+                return next();
+            }
             req.user = user;
             next();
         })
-        .catch(err => console.log(`Error finding user: ${err}`));
-});
-
-app.use((req, res, next) => {
-    res.locals.isAuthenticated = req.session.isLoggedIn;
-    res.locals.csrfToken = req.csrfToken();
-    next();
+        .catch(err => {
+            next(new Error(err));
+        });
 });
 
 
@@ -66,8 +71,18 @@ app.use(authRoutes);
 app.get('/', (req, res, next) => {
     res.redirect('/profile');
 })
-app.use(_404Controller.get404);
+app.use('/500', errorController.get500);
+app.use(errorController.get404);
 
+
+//error middlewares
+app.use((error, req, res, next) => {
+
+    res.status(500).render('500', {
+        pageTitle: 'Error',
+        path: '/500'
+    })
+});
 
 
 mongoose.connect(mongoURI.MONGODB_URI)

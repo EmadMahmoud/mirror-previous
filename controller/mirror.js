@@ -38,7 +38,11 @@ exports.postAddThing = (req, res, next) => {
 
 
         })
-        .catch(err => console.log(`Error add thing: ${err}`));
+        .catch(err => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        })
 };
 
 exports.getAddThing = (req, res, next) => {
@@ -66,7 +70,11 @@ exports.getThings = (req, res, next) => {
                 categories: categories
             });
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        })
 };
 
 
@@ -80,7 +88,11 @@ exports.getThingDetails = (req, res, next) => {
                 thing: fetchedthing
             });
         })
-        .catch(err => console.log(`Error get thing details: ${err}`));
+        .catch(err => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        })
 }
 
 exports.postDeleteThing = (req, res, next) => {
@@ -94,7 +106,11 @@ exports.postDeleteThing = (req, res, next) => {
                     console.log('Thing Deleted Successfully!');
                     res.redirect('/profile');
                 })
-                .catch(err => `Error deleting thing ${err}`);
+                .catch(err => {
+                    const error = new Error(err);
+                    error.httpStatusCode = 500;
+                    return next(error);
+                })
         })
 }
 
@@ -111,7 +127,11 @@ exports.getEditThing = (req, res, next) => {
                 validationErrors: []
             });
         })
-        .catch(err => console.log(`Error get thing to edit: ${err}`))
+        .catch(err => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        })
 }
 
 exports.postEditThing = (req, res, next) => {
@@ -143,5 +163,9 @@ exports.postEditThing = (req, res, next) => {
             console.log('Thing Updated Successfully!');
             res.redirect('/profile');
         })
-        .catch(err => console.log(`Error updating thing: ${err}`))
+        .catch(err => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        })
 }
